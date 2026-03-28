@@ -17,11 +17,13 @@ Bot ini mengambil post `GaG value list` dari Fandom, lalu mengirim `nama pet`, `
 
 ## Install
 
-### Linux / VPS
+### Ubuntu / VPS Ubuntu
 
 ```bash
-git clone <repo-kamu>
-cd bot
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y git python3 python3-venv
+git clone https://github.com/Nadzil123/Real-time-bot.git
+cd Real-time-bot
 chmod +x install.sh configure.sh run.sh
 ./install.sh
 ./configure.sh
@@ -31,8 +33,8 @@ chmod +x install.sh configure.sh run.sh
 ### Termux
 
 ```bash
-git clone <repo-kamu>
-cd bot
+git clone https://github.com/Nadzil123/Real-time-bot.git
+cd Real-time-bot
 chmod +x termux.sh run.sh
 ./termux.sh
 ./run.sh
@@ -118,5 +120,3 @@ Cek:
 ### Gagal install di Termux
 
 Biasanya mentok di Playwright Chromium. Kalau itu terjadi, lebih aman jalankan bot di Linux biasa, VPS, atau proot distro.
-# Real-time-bot
-# Real-time-bot
