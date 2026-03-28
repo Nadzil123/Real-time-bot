@@ -3,7 +3,17 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VENV_DIR="$ROOT_DIR/.venv"
-PYTHON_BIN="${PYTHON_BIN:-python3}"
+PYTHON_BIN="${PYTHON_BIN:-}"
+
+if [ -z "$PYTHON_BIN" ]; then
+  if command -v python3 >/dev/null 2>&1; then
+    PYTHON_BIN="python3"
+  elif command -v python >/dev/null 2>&1; then
+    PYTHON_BIN="python"
+  else
+    PYTHON_BIN="python3"
+  fi
+fi
 
 echo "[1/5] Checking Python"
 command -v "$PYTHON_BIN" >/dev/null 2>&1 || {
@@ -26,7 +36,13 @@ echo "[4/5] Installing Python dependencies"
 pip install -r "$ROOT_DIR/requirements.txt"
 
 echo "[5/5] Installing Playwright Chromium"
-python -m playwright install chromium
+if ! python -m playwright install chromium; then
+  echo ""
+  echo "Gagal install Chromium untuk Playwright."
+  echo "Kalau kamu di Termux, ini memang titik yang paling sering gagal."
+  echo "Coba jalankan di Ubuntu/VPS kalau tetap mentok."
+  exit 1
+fi
 
 if [ ! -f "$ROOT_DIR/.env" ]; then
   cp "$ROOT_DIR/.env.example" "$ROOT_DIR/.env"

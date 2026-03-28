@@ -4,6 +4,18 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ENV_FILE="$ROOT_DIR/.env"
 EXAMPLE_FILE="$ROOT_DIR/.env.example"
+PYTHON_BIN="${PYTHON_BIN:-}"
+
+if [ -z "$PYTHON_BIN" ]; then
+  if command -v python3 >/dev/null 2>&1; then
+    PYTHON_BIN="python3"
+  elif command -v python >/dev/null 2>&1; then
+    PYTHON_BIN="python"
+  else
+    echo "Python tidak ditemukan."
+    exit 1
+  fi
+fi
 
 if [ ! -f "$ENV_FILE" ]; then
   cp "$EXAMPLE_FILE" "$ENV_FILE"
@@ -19,7 +31,17 @@ if [ -z "$WEBHOOK_URL" ]; then
   exit 1
 fi
 
-python3 - <<PY
+case "$WEBHOOK_URL" in
+  https://discord.com/api/webhooks/*|https://canary.discord.com/api/webhooks/*)
+    ;;
+  *)
+    echo "Webhook tidak valid. Format yang benar biasanya dimulai dengan:"
+    echo "https://discord.com/api/webhooks/..."
+    exit 1
+    ;;
+esac
+
+"$PYTHON_BIN" - <<PY
 from pathlib import Path
 
 env_path = Path("$ENV_FILE")

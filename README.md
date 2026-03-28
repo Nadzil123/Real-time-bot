@@ -54,19 +54,32 @@ Script ini akan minta:
 
 Kalau mau edit manual, file config ada di `.env`.
 
+Script sekarang sudah bantu cegah error pemula seperti:
+- webhook masih placeholder
+- format webhook salah
+- `python3` tidak ada tapi `python` ada
+- install Chromium Playwright gagal tanpa pesan yang jelas
+
 ## Menjalankan Bot
 
 ### Test dulu tanpa kirim webhook
 
 ```bash
-source .venv/bin/activate
-python preview.py
+chmod +x preview.sh
+./preview.sh
 ```
 
 ### Jalankan bot
 
 ```bash
 ./run.sh
+```
+
+### Cek environment kalau bingung
+
+```bash
+chmod +x doctor.sh
+./doctor.sh
 ```
 
 ## Contoh Output
@@ -87,6 +100,8 @@ Discord akan menerima embed dengan isi seperti:
 - [install.sh](/root/bot/install.sh): install dependency project
 - [configure.sh](/root/bot/configure.sh): isi webhook dan channel ID
 - [run.sh](/root/bot/run.sh): jalankan bot
+- [preview.sh](/root/bot/preview.sh): test scraper dengan cepat
+- [doctor.sh](/root/bot/doctor.sh): cek environment dan setup
 - [termux.sh](/root/bot/termux.sh): setup Termux
 - [scraper.py](/root/bot/scraper.py): logic scraping
 - [notifier.py](/root/bot/notifier.py): format dan kirim webhook
@@ -115,8 +130,16 @@ Run berikutnya biasanya lebih cepat karena ada cache.
 Cek:
 - webhook benar
 - internet aktif
-- hasil `python preview.py`
+- hasil `./preview.sh`
+- hasil `./doctor.sh`
 
 ### Gagal install di Termux
 
 Biasanya mentok di Playwright Chromium. Kalau itu terjadi, lebih aman jalankan bot di Linux biasa, VPS, atau proot distro.
+
+### `./run.sh` langsung berhenti
+
+Biasanya karena:
+- `.env` belum ada
+- webhook masih placeholder
+- webhook belum diisi lewat `./configure.sh`

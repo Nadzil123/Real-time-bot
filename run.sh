@@ -14,6 +14,12 @@ if [ ! -f "$ROOT_DIR/.env" ]; then
   exit 1
 fi
 
+if grep -q "DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/replace_me" "$ROOT_DIR/.env"; then
+  echo "Webhook masih placeholder."
+  echo "Jalankan ./configure.sh dulu lalu isi webhook Discord yang asli."
+  exit 1
+fi
+
 # shellcheck disable=SC1091
 source "$VENV_DIR/bin/activate"
 
